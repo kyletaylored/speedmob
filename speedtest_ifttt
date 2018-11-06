@@ -13,6 +13,8 @@ source $PWD/speedtest.cfg
 secret_key=$ifttt_secretKey
 event_name=$ifttt_event
 
+echo "Running speed test..."
+
 # Character for separating values
 # (commas are not safe, because some servers return speeds with commas)
 sep=";"
@@ -52,7 +54,7 @@ else
     1>&2 echo "** Reusing existing results: $log"
   else
     # Query Speedtest
-    $PWD/speedtest_cli/speedtest.py --share > $log
+    $PWD/speedtest_cli/speedtest.py --share --server 2409 > $log
   fi
 
   stop=`date +"%Y-%m-%d %H:%M:%S"`
@@ -83,5 +85,12 @@ fi
 value1=`echo $server_ping | cut -d" " -f1`
 value2=`echo $download | cut -d" " -f1`
 value3=`echo $upload | cut -d" " -f1`
-json="{\"value1\":\"${value1}\",\"value2\":\"${value2}\",\"value3\":\"${value3}\"}"
+value4=`echo ${server//,}`
+
+#json="{\"value1\":\"${value1}\",\"value2\":\"${value2}\",\"value3\":\"${value3}\"}"
+json="{\"value1\":\"${from},${from_ip},${value4},${value1},${value2},${value3},${share_url}\"}"
+
 curl -X POST -H "Content-Type: application/json" -d "${json}" https://maker.ifttt.com/trigger/${event_name}/with/key/${secret_key}
+# wget -O- --post-data="${json}" --header="Content-Type:application/json" https://maker.ifttt.com/trigger/${event_name}/with/key/${secret_key}
+
+echo ${json}
