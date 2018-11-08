@@ -86,11 +86,10 @@ value1=`echo $server_ping | cut -d" " -f1`
 value2=`echo $download | cut -d" " -f1`
 value3=`echo $upload | cut -d" " -f1`
 value4=`echo ${server//,}`
-value5= `echo $(date +%Y/%m/%d-%H:%M:%S)`
+value5=`echo $(date +%Y/%m/%d-%H:%M:%S)`
 
 json="{\"value1\":\"${from},${from_ip},${value4},${value1},${value2},${value3},${share_url},${value5}\"}"
 
 curl -X POST -H "Content-Type: application/json" -d "${json}" https://maker.ifttt.com/trigger/${event_name}/with/key/${secret_key}
-# wget -O- --post-data="${json}" --header="Content-Type:application/json" https://maker.ifttt.com/trigger/${event_name}/with/key/${secret_key}
 
-echo ${json}
+#echo ${json}
