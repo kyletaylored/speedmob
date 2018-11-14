@@ -87,13 +87,15 @@ dl=`echo $download | cut -d" " -f1`
 ul=`echo $upload | cut -d" " -f1`
 server=`echo ${server//,}`
 datetime=`echo $(date +%Y/%m/%d-%H:%M:%S)`
-netinfc=`echo $(ip addr | awk '/state UP/ {print $2}' | sed 's/.$//')`
+netinfc=`echo $(ip addr | awk '/state UP/' | awk 'NR==1 {print $2}' | sed 's/.$//')`
 
 # Get IP info
-loc=$(curl -sS http://ipinfo.io/${from_ip}/json | jq --raw-output '.loc')
+ipinfo=$(curl -sS http://ipinfo.io/${from_ip}/json | jq --raw-output '.loc')
+loc=$(ipinfo | jq --raw-output '.loc')
+postal=$(ipinfo | jq --raw-output '.postal')
 
 # Store into JSON
-json="{\"value1\":\"${from},${from_ip},${server},${ping},${dl},${ul},${share_url},${datetime},${netinfc},${loc}\"}"
+json="{\"value1\":\"${from},${from_ip},${server},${ping},${dl},${ul},${share_url},${datetime},${netinfc},${loc},${postal}\"}"
 
 curl -X POST -H "Content-Type: application/json" -d "${json}" https://maker.ifttt.com/trigger/${event_name}/with/key/${secret_key}
 
