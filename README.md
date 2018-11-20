@@ -83,3 +83,9 @@ There are other projects available, like [speedtest-cli-extras by HenrikBengtsso
  ```bash
  sudo apt-get install jq
  ```
+ 
+ Add to crontab
+ ```bash
+ # Run speedtest every 10 minutes
+ */10 * * * * pi /path/to/speedtest_proxy.sh
+ ```
