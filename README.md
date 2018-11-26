@@ -1,4 +1,4 @@
-# speedtest-cron
+# Speedtest IFTTT
 
 [![GitHub stars](https://img.shields.io/github/stars/natterstefan/speedtest-cron.svg)](https://github.com/natterstefan/speedtest-cron/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/natterstefan/speedtest-cron.svg)](https://github.com/natterstefan/speedtest-cron/network)
@@ -43,10 +43,6 @@ With ``` `/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $
 
 _speedtest_cron_ should run regularly to be able to analyse trends. To do so you should add a cronjob to `/etc/crontab` or ```crontab -e```. Take a look at the _speedtest_crontab_ file and replace ```/path/to/this/folder/``` with the actual path.
 
-### speedtest_csv
-
-With ```./speedcsv > results.csv``` you generate a file of the generated results (one file per test in the speedtests folder). You can then further evaluate the results in a spreadsheet.
-
 ### speedtest_ifttt
 
 After reading the "[Use Raspberry Pi to Measure Broadband Speeds to Hold Your ISP Accountable][iftttmaker]" article I decided to implemented [Aallan's work][gistaallan] here too. Because I would like to get either a push notification when the internet speed drops or add the result to a Google Spreadsheet automatically. This is how you use it:
@@ -77,15 +73,20 @@ There are other projects available, like [speedtest-cli-extras by HenrikBengtsso
  [gistaallan]: https://gist.github.com/aallan/bafc70a347f3b9526d30
  [ifapplet]: https://ifttt.com/applets/49618185d-log-speedtest-results-to-spreadsheet
  [maker]: https://ifttt.com/maker
- 
+
  ## Specific to this repo
  Install JQ on Raspberry Pi to parse JSON in bash.
  ```bash
  sudo apt-get install jq
  ```
- 
+
  Add to crontab
  ```bash
  # Run speedtest every 10 minutes
  */10 * * * * pi /path/to/speedtest_proxy.sh
+ ```
+
+ Working on auto install (fix later)
+ ```bash
+ echo "*/10 * * * * ${USER} /path/to/script" | crontab
  ```
