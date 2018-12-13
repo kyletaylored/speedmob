@@ -1,0 +1,128 @@
+#!/usr/bin/env bash
+###########################################################################
+# Originally written by: Henrik Bengtsson, 2014
+# https://github.com/HenrikBengtsson/speedtest-cli-extras
+# Modified to use IFTTT by: Alasdair Allan, 2015
+# https://gist.github.com/aallan/bafc70a347f3b9526d30
+# Modified to use .config file: Stefan Natter, 2017
+# License: GPL (>= 2.1) [http://www.gnu.org/licenses/gpl.html]
+###########################################################################
+
+echo "Running speed test..."
+
+# Character for separating values
+# (commas are not safe, because some servers return speeds with commas)
+sep=";"
+log=$PWD/ifttt.csv
+
+# Local functions
+function str_extract() {
+ pattern=$1
+ # Extract
+ res=`grep "$pattern" $log | sed "s/$pattern//g"`
+ # Drop trailing ...
+ res=`echo $res | sed 's/[.][.][.]//g'`
+ # Trim
+ res=`echo $res | sed 's/^ *//g' | sed 's/ *$//g'`
+ echo $res
+}
+
+fn_exists() {
+ if [ -n "$(type -t $1)" ] && [ "$(type -t $1)" = file ]; then
+  echo $1 "exists. Continuing...";
+ else
+  echo $1 "does not exist. Please install $1, or see the README.md.";
+  exit 1;
+ fi
+}
+
+# Get network interface
+function get_network_interface() {
+    case "$1" in
+    Darwin)
+        ActiveNetwork=$(route get default | grep interface | awk '{print $2}')
+        ActiveNetworkName=$(networksetup -listallhardwareports | grep -B 1 "$ActiveNetwork" | awk '/Hardware Port/{ print }'|cut -d " " -f3-)
+        echo ${ActiveNetworkName}
+        ;;
+    Linux)
+        echo $(ip addr | awk '/state UP/' | awk 'NR==1 {print $2}' | sed 's/.$//')
+        ;;
+    *) echo "System not supported."
+       exit 1
+       ;;
+    esac
+}
+
+# Check dependencies.
+fn_exists jq
+fn_exists speedtest
+
+mkdir -p `dirname $log`
+
+# Query Speedtest
+speedtest --share > $log
+
+# Parse
+from=`str_extract "Testing from "`
+from_ip=`echo $from | sed 's/.*(//g' | sed 's/).*//g'`
+from=`echo $from | sed 's/ (.*//g'`
+
+server=`str_extract "Hosted by "`
+server_ping=`echo $server | sed 's/.*: //g'`
+server=`echo $server | sed 's/: .*//g'`
+server_dist=`echo $server | sed 's/.*\\[//g' | sed 's/\\].*//g'`
+server=`echo $server | sed 's/ \\[.*//g'`
+
+download=`str_extract "Download: "`
+upload=`str_extract "Upload: "`
+share_url=`str_extract "Share results: "`
+
+# Prepare variables.
+ping=`echo ${server_ping} | cut -d" " -f1`
+dl=`echo ${download} | cut -d" " -f1`
+ul=`echo ${upload} | cut -d" " -f1`
+server=`echo ${server//,}`
+dist=`echo ${server_dist} | awk {'print $1'}`
+
+# Get Network interface
+OS=`echo $(uname)`
+netinfc=`echo $(get_network_interface ${OS})`
+
+# Get IP info
+ipinfo=$(curl -sS http://ipinfo.io/${from_ip}/json)
+loc=$(echo $ipinfo | jq --raw-output '.loc')
+city=$(echo $ipinfo | jq --raw-output '.city')
+state=$(echo $ipinfo | jq --raw-output '.region')
+country=$(echo $ipinfo | jq --raw-output '.country')
+postal=$(echo $ipinfo | jq --raw-output '.postal')
+
+# Break down geo points
+latlon=$(echo ${loc} | sed 's/,/ /g')
+lat=$(echo ${latlon} | awk {'print $1'})
+lon=$(echo ${latlon} | awk {'print $2'})
+
+# Store into JSON
+json="{\"value1\":\"${from},${from_ip},${server},${ping},${dl},${ul},${share_url},${datetime},${netinfc},${loc},${postal}\"}"
+JSON_STRING=$( jq -n \
+                  --arg fm "$from" \
+                  --arg fi "$from_ip" \
+                  --arg sd "$dist" \
+                  --arg pi "$ping" \
+                  --arg dl "$dl" \
+                  --arg ul "$ul" \
+                  --arg su "$share_url" \
+                  --arg nt "$netinfc" \
+                  --arg lat "$lat" \
+                  --arg lon "$lon" \
+                  --arg po "$postal" \
+                  --arg ct "$city" \
+                  --arg st "$state" \
+                  --arg co "$country" \
+                  --arg os "$OS" \
+                  '{"isp": $fm,"host_server": $fi,"host_distance": $sd,"ping": $pi,"download": $dl,"upload": $ul,"share_url": $su,"network_interface": $nt,"operating_system": $os, "latitude": $lat,"longitude": $lon,"postal_code": $po,"city": $ct,"state": $st,"country": $co}' )
+
+
+#curl -X POST -H "Content-Type: application/json" -d "${json}" https://maker.ifttt.com/trigger/${event_name}/with/key/${secret_key}
+
+echo ""
+echo ${JSON_STRING}
