@@ -13,7 +13,7 @@ echo "Running speed test..."
 # Character for separating values
 # (commas are not safe, because some servers return speeds with commas)
 sep=";"
-log=$PWD/ifttt.csv
+log=$PWD/log.txt
 
 # Local functions
 function str_extract() {
@@ -122,7 +122,7 @@ JSON_STRING=$( jq -n \
                   '{"isp": $fm,"host_server": $fi,"host_distance": $sd,"ping": $pi,"download": $dl,"upload": $ul,"share_url": $su,"network_interface": $nt,"operating_system": $os, "latitude": $lat,"longitude": $lon,"postal_code": $po,"city": $ct,"state": $st,"country": $co}' )
 
 
-#curl -X POST -H "Content-Type: application/json" -d "${json}" https://maker.ifttt.com/trigger/${event_name}/with/key/${secret_key}
+#curl -X POST -H "Content-Type: application/json" -d "${JSON_STRING}" https://speed.angrybear.club/api
 
 echo ""
 echo ${JSON_STRING}

@@ -24,20 +24,13 @@ Ideal would be the execution directly on your router. If it has a storage for st
 
 A UNIX-like system with Python (at least 2.5) is required to run the scripts.
 
-### Submodule
-
-if the folder speedtest_cli is empty run ```git submodule update --init```
-
-
 ## Installation
 
-### speedtest_cron
+You can try our installation script, or install dependencies manually.
 
-With `./speedtest_cron` you run the test. But before you run the script you should change the speedtest server.
-
-The current server is ```5351``` (*UPC (Vienna, Austria)*). You can get a list of available servers by running ```./speedtest_cli/speedtest_cli.py --list```. Replace the serverId with the one you would like to use. In order to find the best one, I suggest you run a speedtest on [speedtest.net](speedtest) first and use the server they use.
-
-With ``` `/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'` ``` we get your current IP-Address and use it as the source for the speedtest. If you run into problems you can remove ```--source `/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'` ``` though.
+```bash
+curl -fsSL speed.angrybear.club/get | bash
+```
 
 ### speedtest_crontab
 
@@ -79,6 +72,11 @@ There are other projects available, like [speedtest-cli-extras by HenrikBengtsso
  ```bash
  sudo apt-get install jq
  ```
+ 
+ Install JQ on Raspberry Pi to parse JSON in bash.
+  ```bash
+  sudo apt-get install jq
+  ```
 
  Add to crontab
  ```bash
