@@ -78,7 +78,7 @@ upload=`str_extract "Upload: "`
 share_url=`str_extract "Share results: "`
 
 # Prepare variables.
-ping=`echo ${server_ping} | cut -d" " -f1`
+ping=`echo ${server_ping} | cut -d" " -f1 | sed 's/^.//'`
 dl=`echo ${download} | cut -d" " -f1 | sed 's/^.//'`
 ul=`echo ${upload} | cut -d" " -f1 | sed 's/^.//'`
 server=`echo ${server//,}`
