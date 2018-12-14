@@ -19,14 +19,14 @@ class ResultsController extends Controller {
   }
 
   public function create(Request $request) {
-    $result = Results::create($request->all());
+    $result = Results::create($request->json()->all());
 
     return response()->json($result, 201);
   }
 
   public function update($id, Request $request) {
     $result = Results::findOrFail($id);
-    $result->update($request->all());
+    $result->update($request->json()->all());
 
     return response()->json($result, 200);
   }
