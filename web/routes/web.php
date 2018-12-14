@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\File;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -12,19 +14,18 @@
 */
 
 $router->get('/', function () use ($router) {
-  $date = DateTime::createFromFormat('d-m-Y H:i:s', '1544496695');
-  var_dump($date);
-  return $router->app->version();
+//  return $router->app->version();
+  return File::get(public_path() . '/index.php');
 });
 
 $router->group(['prefix' => 'api'], function () use ($router) {
-  $router->get('results',  ['uses' => 'ResultsController@showAllResults']);
+//  $router->get('results',  ['uses' => 'ResultsController@showAllResults']);
 
-  $router->get('results/{id}', ['uses' => 'ResultsController@showOneResult']);
+//  $router->get('results/{id}', ['uses' => 'ResultsController@showOneResult']);
 
   $router->post('results', ['uses' => 'ResultsController@create']);
 
-  $router->delete('results/{id}', ['uses' => 'ResultsController@delete']);
+//  $router->delete('results/{id}', ['uses' => 'ResultsController@delete']);
 
-  $router->put('results/{id}', ['uses' => 'ResultsController@update']);
+//  $router->put('results/{id}', ['uses' => 'ResultsController@update']);
 });
