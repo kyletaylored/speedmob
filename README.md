@@ -86,5 +86,6 @@ There are other projects available, like [speedtest-cli-extras by HenrikBengtsso
 
  Working on auto install (fix later)
  ```bash
- echo "*/10 * * * * ${USER} /path/to/script" | crontab
+ # Run test every 30 minutes.
+ echo "*/30 * * * * ${USER} /path/to/script" | crontab
  ```
