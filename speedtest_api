@@ -102,7 +102,6 @@ lat=$(echo ${latlon} | awk {'print $1'})
 lon=$(echo ${latlon} | awk {'print $2'})
 
 # Store into JSON
-json="{\"value1\":\"${from},${from_ip},${server},${ping},${dl},${ul},${share_url},${datetime},${netinfc},${loc},${postal}\"}"
 JSON_STRING=$( jq -n \
                   --arg fm "$from" \
                   --arg hs "$server" \
@@ -125,4 +124,4 @@ JSON_STRING=$( jq -n \
 #curl -X POST -H "Content-Type: application/json" -d "${JSON_STRING}" https://speed.angrybear.club/api
 curl -X POST -H "Content-Type: application/json" -d "${JSON_STRING}" http://speed.angrybear.club/api/results
 echo ""
-echo ${JSON_STRING}
+echo "Successfully submitted speedtest results!"
