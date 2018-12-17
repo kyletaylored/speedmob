@@ -8,12 +8,12 @@
 [![Twitter Follow](https://img.shields.io/twitter/follow/kyletaylored.svg?style=social&label=Follow)](https://twitter.com/kyletaylored)
 
 
-An easy to use script test the speed (down-, upload and ping) of your ISP regularly (cronjob). [Inspired (Forked) by natterstefan's speedtest_cron on Github][jsspcr].
+An easy to use script test the speed (down-, upload and ping) of your ISP regularly (cronjob), and contribute to a common datastore. [Inspired (Forked) by natterstefan's speedtest_cron on Github][natterstefan].
 
 
 ## Idea
 
-To run speedtests we use [speedtest-cli by Matt Martz][spcli]. For consistent results, always use the same test server. Regular tests can be used to identify trends.
+To run speedtests we use [speedtest-cli by Matt Martz][spcli]. For consistent results, you could always use the same test server, but for more dynamic results we will use the randomly selected server. Regular tests can be used to identify trends.
 
 The tests should be performed as close to the modem / router as possible. In any case I recommend you use a Ethernet (network) cable.
 
@@ -55,7 +55,7 @@ Improvements, suggestions or bug fixes are very welcome. Just create a pull requ
 
 There are other projects available, like [speedtest-cli-extras by HenrikBengtsson][spclix], [speedtest-cron by vwillcox][vwillcox] or [speedtest-cron by brainTrain][brainTrain]. The last one makes use of [Google Spreadsheets and IFTTT's Maker][iftttmaker].
 
-
+ [natterstefan]: https://github.com/natterstefan/speedtest-cron
  [spcli]: https://github.com/sivel/speedtest-cli
  [ifapplet]: https://ifttt.com/applets/49618185d-log-speedtest-results-to-spreadsheet
  [maker]: https://ifttt.com/maker
