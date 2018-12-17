@@ -123,5 +123,5 @@ JSON_STRING=$( jq -n \
 
 #curl -X POST -H "Content-Type: application/json" -d "${JSON_STRING}" https://speed.angrybear.club/api
 curl -X POST -H "Content-Type: application/json" -d "${JSON_STRING}" http://speed.angrybear.club/api/results
-echo ""
+logger -s "Submitted speedtest results. Ping: ${ping}, DL: ${dl}, UL: ${ul}"
 echo "Successfully submitted speedtest results!"
