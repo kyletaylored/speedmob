@@ -1,14 +1,14 @@
-# Speedtest IFTTT
+# Speed Mob
 
-[![GitHub stars](https://img.shields.io/github/stars/natterstefan/speedtest-cron.svg)](https://github.com/natterstefan/speedtest-cron/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/natterstefan/speedtest-cron.svg)](https://github.com/natterstefan/speedtest-cron/network)
+[![GitHub stars](https://img.shields.io/github/stars/kyletaylored/speedmob.svg)](https://github.com/kyletaylored/speedmob/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/kyletaylored/speedmob.svg)](https://github.com/kyletaylored/speedmob/network)
 [![GitHub issues](https://img.shields.io/github/issues/natterstefan/speedtest-cron.svg)](https://github.com/natterstefan/speedtest-cron/issues)
-[![Inspired by J0s3f](https://img.shields.io/badge/Inspired%20by-J0s3f-blue.svg)](https://gitgud.io/J0s3f/speedtest_cron)
+[![Inspired by J0s3f](https://img.shields.io/badge/Inspired%20by-natterstefan-blue.svg)](https://github.com/natterstefan/speedtest-cron)
 [![Twitter](https://img.shields.io/twitter/url/https/github.com/kyletaylored/speedmob.svg?style=social)](https://twitter.com/intent/tweet?text=https://github.com/kyletaylored/speedmob)
 [![Twitter Follow](https://img.shields.io/twitter/follow/kyletaylored.svg?style=social&label=Follow)](https://twitter.com/kyletaylored)
 
 
-An easy to use script test the speed (down-, upload and ping) of your ISP regularly (cronjob). [Inspired (Forked) by J0s3f's speedtest_cron on gitgud.io][jsspcr].
+An easy to use script test the speed (down-, upload and ping) of your ISP regularly (cronjob). [Inspired (Forked) by natterstefan's speedtest_cron on Github][jsspcr].
 
 
 ## Idea
@@ -26,7 +26,7 @@ A UNIX-like system with Python (at least 2.5) is required to run the scripts.
 
 ## Installation
 
-You can try our installation script, or install dependencies manually.
+You can try our installation script (beta), or install dependencies manually.
 
 ```bash
 curl -fsSL speed.angrybear.club/get | bash
@@ -57,13 +57,6 @@ There are other projects available, like [speedtest-cli-extras by HenrikBengtsso
 
 
  [spcli]: https://github.com/sivel/speedtest-cli
- [spclix]: https://github.com/HenrikBengtsson/speedtest-cli-extras
- [vwillcox]: https://github.com/vwillcox/speedtest-cron
- [brainTrain]: https://github.com/brainTrain/speedtest-cron
- [speedtest]: http://www.speedtest.net/
- [jsspcr]: https://gitgud.io/J0s3f/speedtest_cron
- [iftttmaker]: http://makezine.com/projects/send-ticket-isp-when-your-internet-drops/
- [gistaallan]: https://gist.github.com/aallan/bafc70a347f3b9526d30
  [ifapplet]: https://ifttt.com/applets/49618185d-log-speedtest-results-to-spreadsheet
  [maker]: https://ifttt.com/maker
 
