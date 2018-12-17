@@ -32,6 +32,15 @@ You can try our installation script (beta), or install dependencies manually.
 curl -fsSL speed.angrybear.club/get | bash
 ```
 
+#### Manual
+``` bash
+git clone https://github.com/kyletaylored/speedmob
+cd speedmob
+brew install speedtest-cli jq
+chmod +x install_crontab
+./install_crontab
+```
+
 ### speedtest_crontab
 
 _speedtest_cron_ should run regularly to be able to analyse trends. To do so you should add a cronjob to `/etc/crontab` or ```crontab -e```. Take a look at the _speedtest_crontab_ file and replace ```/path/to/this/folder/``` with the actual path.
