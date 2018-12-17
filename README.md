@@ -68,14 +68,14 @@ There are other projects available, like [speedtest-cli-extras by HenrikBengtsso
  [maker]: https://ifttt.com/maker
 
  ## Specific to this repo
- Install JQ on Raspberry Pi to parse JSON in bash.
+ Install JQ and Speedtest CLI on Raspberry Pi to parse JSON in bash.
  ```bash
- sudo apt-get install jq
+ sudo apt-get install speedtest-cli jq
  ```
- 
- Install JQ on Raspberry Pi to parse JSON in bash.
+
+ Install JQ / Speedtest on Mac.
   ```bash
-  sudo apt-get install jq
+  brew install speedtest-cli jq
   ```
 
  Add to crontab
@@ -87,5 +87,5 @@ There are other projects available, like [speedtest-cli-extras by HenrikBengtsso
  Working on auto install (fix later)
  ```bash
  # Run test every 30 minutes.
- echo "*/30 * * * * ${USER} /path/to/script" | crontab
+ echo "*/30 * * * * ${USER} /path/to/dir/speedtest_proxy.sh" | crontab
  ```
