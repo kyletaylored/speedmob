@@ -1,4 +1,4 @@
 #!/bin/bash
-
-cd /home/pi/speedtest-cron
-/bin/bash speedtest_ifttt
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+cd $DIR
+/bin/bash speedtest_api
