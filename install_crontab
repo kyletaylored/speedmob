@@ -1,0 +1,4 @@
+#!/bin/bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+# Run test every 30 minutes.
+echo "*/30 * * * * ${USER} $DIR/speedtest_proxy.sh" | crontab
