@@ -5,29 +5,26 @@
 # Modified to use IFTTT by: Alasdair Allan, 2015
 # https://gist.github.com/aallan/bafc70a347f3b9526d30
 # Modified to use .config file: Stefan Natter, 2017
+# Modified to connect to external web API: Kyle Taylor, 2018
 # License: GPL (>= 2.1) [http://www.gnu.org/licenses/gpl.html]
 ###########################################################################
 
+set -e  # Abort if anything fails
+
 echo "Running speed test..."
 
-# Character for separating values
-# (commas are not safe, because some servers return speeds with commas)
-sep=";"
-log=$PWD/log.txt
+# Declare some functions we'll use.
+function round() {
+  printf "%0.2f\n" $1
+};
 
-# Local functions
-function str_extract() {
- pattern=$1
- # Extract
- res=`grep "$pattern" $log | sed "s/$pattern//g"`
- # Drop trailing ...
- res=`echo $res | sed 's/[.][.][.]//g'`
- # Trim
- res=`echo $res | sed 's/^ *//g' | sed 's/ *$//g'`
- echo $res
+function convert_mb() {
+  echo "scale=10;
+  $1 / 1000000;" \
+  | bc
 }
 
-fn_exists() {
+function fn_exists() {
  if [ -n "$(type -t $1)" ] && [ "$(type -t $1)" = file ]; then
   echo $1 "exists. Continuing...";
  else
@@ -57,32 +54,19 @@ function get_network_interface() {
 fn_exists jq
 fn_exists speedtest
 
-mkdir -p `dirname $log`
-
 # Query Speedtest
-speedtest --share > $log
+results=$(speedtest --share --json --bytes)
+echo $results
 
-# Parse
-from=`str_extract "Testing from "`
-from_ip=`echo $from | sed 's/.*(//g' | sed 's/).*//g'`
-from=`echo $from | sed 's/ (.*//g'`
-
-server=`str_extract "Hosted by "`
-server_ping=`echo $server | sed 's/.*: //g'`
-server=`echo $server | sed 's/: .*//g'`
-server_dist=`echo $server | sed 's/.*\\[//g' | sed 's/\\].*//g'`
-server=`echo $server | sed 's/ \\[.*//g'`
-
-download=`str_extract "Download: "`
-upload=`str_extract "Upload: "`
-share_url=`str_extract "Share results: "`
-
-# Prepare variables.
-ping=`echo ${server_ping} | cut -d" " -f1 | sed 's/^.//'`
-dl=`echo ${download} | cut -d" " -f1 | sed 's/^.//'`
-ul=`echo ${upload} | cut -d" " -f1 | sed 's/^.//'`
-server=`echo ${server//,}`
-dist=`echo ${server_dist} | awk {'print $1'}`
+# Parse to prepare variables.
+ping=`round $(echo $results | jq --raw-output '.ping')`
+dl=`round $(convert_mb $(echo $results | jq --raw-output '.download'))`
+ul=`round $(convert_mb $(echo $results | jq --raw-output '.upload'))`
+share_url=`echo $results | jq --raw-output '.share'`
+server=`echo $results | jq --raw-output '.server.sponsor'`
+dist=`round $(echo $results | jq --raw-output '.server.d')`
+isp=`echo $results | jq --raw-output '.client.isp'`
+from_ip=`echo $results | jq --raw-output '.client.ip'`
 
 # Get Network interface
 OS=`echo $(uname)`
@@ -103,7 +87,7 @@ lon=$(echo ${latlon} | awk {'print $2'})
 
 # Store into JSON
 JSON_STRING=$( jq -n \
-                  --arg fm "$from" \
+                  --arg fm "$isp" \
                   --arg hs "$server" \
                   --arg sd "$dist" \
                   --arg pi "$ping" \
@@ -120,8 +104,5 @@ JSON_STRING=$( jq -n \
                   --arg os "$OS" \
                   '{"isp": $fm,"host_server": $hs,"host_distance": $sd,"ping": $pi,"download": $dl,"upload": $ul,"share_url": $su,"network_interface": $nt,"operating_system": $os, "latitude": $lat,"longitude": $lon,"postal_code": $po,"city": $ct,"state": $st,"country": $co}' )
 
-
-#curl -X POST -H "Content-Type: application/json" -d "${JSON_STRING}" https://speed.angrybear.club/api
-curl -X POST -H "Content-Type: application/json" -d "${JSON_STRING}" http://speed.angrybear.club/api/results
-logger -s "Submitted speedtest results. Ping: ${ping}, DL: ${dl}, UL: ${ul}"
-echo "Successfully submitted speedtest results!"
+# curl -X POST -H "Content-Type: application/json" -d "${JSON_STRING}" http://speed.angrybear.club/api/results
+logger -s "Submitted speedtest results. ${JSON_STRING}"
