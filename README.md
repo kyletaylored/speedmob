@@ -32,11 +32,20 @@ You can try our installation script (beta), or install dependencies manually.
 curl -fsSL speed.angrybear.club/get | bash
 ```
 
-#### Manual
+#### On Mac
 ``` bash
 git clone https://github.com/kyletaylored/speedmob
 cd speedmob
-brew install speedtest-cli jq
+brew install speedtest-cli jq bc
+chmod +x install_crontab
+./install_crontab
+```
+
+#### On Raspian / Linux
+``` bash
+git clone https://github.com/kyletaylored/speedmob
+cd speedmob
+sudo apt-get install speedtest-cli jq bc
 chmod +x install_crontab
 ./install_crontab
 ```
@@ -70,24 +79,26 @@ There are other projects available, like [speedtest-cli-extras by HenrikBengtsso
  [maker]: https://ifttt.com/maker
 
  ## Specific to this repo
- Install JQ and Speedtest CLI on Raspberry Pi to parse JSON in bash.
+ Install Speedtest CLI, JQ, and BC on Raspberry Pi to parse JSON and do math in bash.
  ```bash
- sudo apt-get install speedtest-cli jq
+ sudo apt-get install speedtest-cli jq bc
  ```
 
  Install JQ / Speedtest on Mac.
   ```bash
-  brew install speedtest-cli jq
+  brew install speedtest-cli jq bc
   ```
 
- Add to crontab
- ```bash
- # Run speedtest every 10 minutes
- */10 * * * * pi /path/to/speedtest_proxy.sh
- ```
-
- Working on auto install (fix later)
+ If you want to auto-add to cron, you can use this command on Linux / Raspian. When in the root project directory, enter the following:
  ```bash
  # Run test every 30 minutes.
- echo "*/30 * * * * ${USER} /path/to/dir/speedtest_proxy.sh" | crontab
+ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+ echo "*/30 * * * * ${USER} ${DIR}/speedtest_proxy.sh" | crontab
+ ```
+
+ On Mac, we drop the user requirement. This will eventually be a launchd command.
+ ```bash
+ # Run test every 30 minutes.
+ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+ echo "*/30 * * * * ${DIR}/speedtest_proxy.sh" | crontab
  ```

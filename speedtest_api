@@ -51,12 +51,12 @@ function get_network_interface() {
 }
 
 # Check dependencies.
-fn_exists jq
-fn_exists speedtest
+fn_exists jq # json manipulator
+fn_exists speedtest # speedtest-cli
+fn_exists bc # calculator
 
 # Query Speedtest
 results=$(speedtest --share --json --bytes)
-echo $results
 
 # Parse to prepare variables.
 ping=`round $(echo $results | jq --raw-output '.ping')`

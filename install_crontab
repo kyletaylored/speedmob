@@ -1,4 +1,17 @@
 #!/bin/bash
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 # Run test every 30 minutes.
-echo "*/30 * * * * ${USER} $DIR/speedtest_proxy.sh" | crontab
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+OS=`echo $(uname)`
+case $OS in
+	Darwin)
+		echo "Mac detected..."
+		echo "*/30 * * * * $DIR/speedtest_proxy.sh" | crontab
+	    ;;
+	Linux)
+		echo "Linux detected..."
+		echo "*/30 * * * * ${USER} $DIR/speedtest_proxy.sh" | crontab
+	    ;;
+	*) echo "System not supported."
+	   exit 1
+	   ;;
+esac
