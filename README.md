@@ -45,8 +45,10 @@ chmod +x install_crontab
 ``` bash
 git clone https://github.com/kyletaylored/speedmob
 cd speedmob
-sudo apt-get install speedtest-cli jq bc
-chmod +x install_crontab
+sudo apt-get update
+sudo apt-get install jq bc -y
+chmod +x install_crontab install_raspian
+./install_raspian
 ./install_crontab
 ```
 
