@@ -3,5 +3,5 @@ cd /tmp
 wget https://github.com/sivel/speedtest-cli/archive/master.zip
 unzip master.zip
 cd speedtest-cli-master
-chmod 755 speedtest_cli.py
-sudo mv speedtest_cli.py /usr/local/bin/speedtest-cli
+chmod 755 speedtest.py
+sudo mv speedtest.py /usr/local/bin/speedtest-cli

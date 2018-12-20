@@ -42,6 +42,7 @@ chmod +x install_crontab
 ```
 
 #### On Raspian / Linux
+We need to install from the source because the APT repository doesn't have the updated version of Speedtest CLI (and `pip install` seems to break).
 ``` bash
 git clone https://github.com/kyletaylored/speedmob
 cd speedmob
