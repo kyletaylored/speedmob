@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 cd /tmp
 wget https://github.com/sivel/speedtest-cli/archive/master.zip
-unzip master.zip
+unzip -qq master.zip
 cd speedtest-cli-master
 chmod 755 speedtest.py
 sudo mv speedtest.py /usr/local/bin/speedtest
