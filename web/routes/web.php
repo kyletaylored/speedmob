@@ -18,6 +18,12 @@ $router->get('/', function () use ($router) {
   return File::get(public_path() . '/index.php');
 });
 
+$router->get('/get', function () use ($router) {
+  // Redirect to Github link
+  return redirect('https://raw.githubusercontent.com/kyletaylored/speedmob/master/installer.sh');
+  // return nl2br(file_get_contents('https://raw.githubusercontent.com/kyletaylored/speedmob/master/installer.sh'));
+});
+
 $router->group(['prefix' => 'api'], function () use ($router) {
 //  $router->get('results',  ['uses' => 'ResultsController@showAllResults']);
 
