@@ -32,30 +32,19 @@ You can try our installation script (beta), or install dependencies manually.
 curl -fsSL speed.angrybear.club/get | bash
 ```
 
-#### On Mac
+#### Manual install
 ``` bash
 git clone https://github.com/kyletaylored/speedmob
 cd speedmob
-brew install speedtest-cli jq bc
-chmod +x install_crontab
-./install_crontab
+chmod +x installer.sh
+./installer.sh
 ```
 
-#### On Raspian / Linux
-We need to install from the source because the APT repository doesn't have the updated version of Speedtest CLI (and `pip install` seems to break).
+#### Uninstall
 ``` bash
-git clone https://github.com/kyletaylored/speedmob
-cd speedmob
-sudo apt-get update
-sudo apt-get install jq bc -y
-chmod +x install_crontab install_raspian
-./install_raspian
-./install_crontab
+chmod +x uninstall.sh
+./uninstall.sh
 ```
-
-### speedtest_crontab
-
-_speedtest_cron_ should run regularly to be able to analyse trends. To do so you should add a cronjob to `/etc/crontab` or ```crontab -e```. Take a look at the _speedtest_crontab_ file and replace ```/path/to/this/folder/``` with the actual path.
 
 ### speedtest_ifttt
 
@@ -81,27 +70,3 @@ There are other projects available, like [speedtest-cli-extras by HenrikBengtsso
  [ifapplet]: https://ifttt.com/applets/49618185d-log-speedtest-results-to-spreadsheet
  [maker]: https://ifttt.com/maker
 
- ## Specific to this repo
- Install Speedtest CLI, JQ, and BC on Raspberry Pi to parse JSON and do math in bash.
- ```bash
- sudo apt-get install speedtest-cli jq bc
- ```
-
- Install JQ / Speedtest on Mac.
-  ```bash
-  brew install speedtest-cli jq bc
-  ```
-
- If you want to auto-add to cron, you can use this command on Linux / Raspian. When in the root project directory, enter the following:
- ```bash
- # Run test every 30 minutes.
- DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
- echo "*/30 * * * * ${USER} ${DIR}/speedtest_proxy.sh" | crontab
- ```
-
- On Mac, we drop the user requirement. This will eventually be a launchd command.
- ```bash
- # Run test every 30 minutes.
- DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
- echo "*/30 * * * * ${DIR}/speedtest_proxy.sh" | crontab
- ```
