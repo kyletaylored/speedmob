@@ -65,8 +65,13 @@ Improvements, suggestions or bug fixes are very welcome. Just create a pull requ
 
 There are other projects available, like [speedtest-cli-extras by HenrikBengtsson][spclix], [speedtest-cron by vwillcox][vwillcox] or [speedtest-cron by brainTrain][brainTrain]. The last one makes use of [Google Spreadsheets and IFTTT's Maker][iftttmaker].
 
- [natterstefan]: https://github.com/natterstefan/speedtest-cron
- [spcli]: https://github.com/sivel/speedtest-cli
- [ifapplet]: https://ifttt.com/applets/49618185d-log-speedtest-results-to-spreadsheet
- [maker]: https://ifttt.com/maker
-
+[spcli]: https://github.com/sivel/speedtest-cli
+[spclix]: https://github.com/HenrikBengtsson/speedtest-cli-extras
+[vwillcox]: https://github.com/vwillcox/speedtest-cron
+[brainTrain]: https://github.com/brainTrain/speedtest-cron
+[speedtest]: http://www.speedtest.net/
+[jsspcr]: https://gitgud.io/J0s3f/speedtest_cron
+[iftttmaker]: http://makezine.com/projects/send-ticket-isp-when-your-internet-drops/
+[gistaallan]: https://gist.github.com/aallan/bafc70a347f3b9526d30
+[ifapplet]: https://ifttt.com/applets/49618185d-log-speedtest-results-to-spreadsheet
+[maker]: https://ifttt.com/maker
