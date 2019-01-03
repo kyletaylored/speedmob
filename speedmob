@@ -9,9 +9,8 @@
 # License: GPL (>= 2.1) [http://www.gnu.org/licenses/gpl.html]
 ###########################################################################
 
-set -e  # Abort if anything fails
-
-echo "Running speed test..."
+# Abort if anything fails
+set -e
 
 # Declare some functions we'll use.
 function round() {
@@ -50,6 +49,10 @@ function get_network_interface() {
     esac
 }
 
+#########################################
+# Start running script
+#########################################
+echo "Running speed test..."
 # Check dependencies.
 fn_exists jq # json manipulator
 fn_exists speedtest # speedtest-cli
