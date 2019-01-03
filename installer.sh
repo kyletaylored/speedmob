@@ -1,9 +1,5 @@
 #!/bin/bash
-# Agree to send your data.
-echo "This project is purely for research and as a data aggreagation exercise. We do not collect any personally identifiable information such as MAC addresses or public IP address, other than the vague geoIP data attributed to that public IP address for mapping and filtering purposes."
-read -r -p "Do you agree to share your speedtest results with the speedmob data collection server? [y/N] " response
-if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]];
-then
+function install() {
 	OS=`echo $(uname)`
 	# Install speedmob
 	case $OS in
@@ -35,6 +31,23 @@ then
 		   exit 1
 		   ;;
 	esac
-else
-	echo "You must agree to the terms set above."
-fi
+}
+
+# Agree to send your data.
+echo "This project is purely for research and as a data aggreagation exercise. We do not collect any personally identifiable information such as MAC addresses or public IP address, other than the vague geoIP data attributed to that public IP address for mapping and filtering purposes."
+echo ""
+echo "Do you agree to share your speedtest results with the speedmob data collection server?"
+
+select yn in Yes No
+do
+case $yn in
+    Yes)
+		install
+		exit
+		;;
+    *)
+		echo "You must agree to the terms set above."
+		exit
+		;;
+esac
+done
