@@ -1,8 +1,5 @@
 #!/bin/bash
-
-# Import variables
-source $PWD/variables.cfg
-
+OS=`echo $(uname)`
 # Install speedmob
 case $OS in
 	Darwin)
