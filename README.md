@@ -75,3 +75,21 @@ There are other projects available, like [speedtest-cli-extras by HenrikBengtsso
 [gistaallan]: https://gist.github.com/aallan/bafc70a347f3b9526d30
 [ifapplet]: https://ifttt.com/applets/49618185d-log-speedtest-results-to-spreadsheet
 [maker]: https://ifttt.com/maker
+
+---
+## Support
+
+Support obviously not guaranteed, but I'll try my best.
+
+- Twitter at <a href="http://twitter.com/kyletaylored" target="_blank">`@kyletaylored`</a>
+
+
+---
+
+## License and Disclaimer
+
+By installing this software, you agree to share your speedtest result data with the speedmob server for the purpose of research and an exercise in data aggregation. We do not collect any personally identifiable information other than utilizing your public IP address to fetch GeoIP coordinates for the purpose of mapping and filtering data. You will not hold the repository owner, Kyle Taylor, or the software developers of the tools that speedmob utilizes accountable for any actions you take or damage caused.
+
+[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
+
+- **[MIT license](http://opensource.org/licenses/mit-license.php)**
