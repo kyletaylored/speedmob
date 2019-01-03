@@ -78,6 +78,7 @@ There are other projects available, like [speedtest-cli-extras by HenrikBengtsso
 [gistaallan]: https://gist.github.com/aallan/bafc70a347f3b9526d30
 [ifapplet]: https://ifttt.com/applets/49618185d-log-speedtest-results-to-spreadsheet
 [maker]: https://ifttt.com/maker
+[natterstefan]: https://github.com/natterstefan/speedtest-cron
 
 
 ## Support
