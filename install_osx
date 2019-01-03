@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Import variables
+source $PWD/variables.cfg
+
+# Copy LaunchDaemon plist file and load..
+sudo cp "$IDENTIFIER.plist" "$LAUNCH_AGENT_PLIST"
+/bin/launchctl load $LAUNCH_AGENT_PLIST
+
+#exit 0
+# Check LaunchDaemon is loaded.
+STATUS=`/bin/launchctl list | /usr/bin/grep $IDENTIFIER | /usr/bin/awk '{print $3}'`
+
+if [ "$STATUS" = "$IDENTIFIER" ]
+then
+echo "Success: LaunchAgent loaded."
+exit 0
+else
+echo "Error: LaunchAgent not loaded."
+exit 1
+fi

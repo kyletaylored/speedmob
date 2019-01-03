@@ -1,15 +1,18 @@
 #!/bin/bash
+
+# Import variables
+source $PWD/variables.cfg
+
 # Run test every 30 minutes.
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-OS=`echo $(uname)`
 case $OS in
 	Darwin)
-		echo "Mac detected..."
-		echo "*/30 * * * * $DIR/speedtest_proxy.sh" | crontab
+		echo "Installing LaunchDaemon..."
+		chmod +x install_osx
+		./install_osx
 	    ;;
 	Linux)
-		echo "Linux detected..."
-		echo "*/30 * * * * ${USER} $DIR/speedtest_proxy.sh" | crontab
+		echo "Installing crontab task..."
+		echo "*/30 * * * * ${USER} speedmob" | crontab
 	    ;;
 	*) echo "System not supported."
 	   exit 1
