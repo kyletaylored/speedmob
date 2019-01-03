@@ -8,17 +8,20 @@
 [![Twitter Follow](https://img.shields.io/twitter/follow/kyletaylored.svg?style=social&label=Follow)](https://twitter.com/kyletaylored)
 
 
-An easy to use script test the speed (down-, upload and ping) of your ISP regularly (cronjob), and contribute to a common datastore. [Inspired (Forked) by natterstefan's speedtest_cron on Github][natterstefan].
+[Inspired (Forked) by natterstefan's speedtest_cron on Github][natterstefan], Speed Mob uses the same principles of running a speedtest on a regular schedule (every 30 minutes by default) that then submits the results to our Speed Mob server (a Lumen app that writes to a MySQL database) where it will be used to aggregate and showcase all speedtest results submitted.
+
+For anyone interested in making their own Speed Mob server, feel free to use this as a source! The installation supports both Mac OS(X) and Linux (Raspian) to use as clients that submit data to the server, and utilized as common tooling as possible for consitency (bash, python, jq, etc).
 
 
 ## Idea
 
-To run speedtests we use [speedtest-cli by Matt Martz][spcli]. For consistent results, you could always use the same test server, but for more dynamic results we will use the randomly selected server. Regular tests can be used to identify trends.
+While unable to run directly on a router, it's now super simple to setup and install on a Raspberry Pi connected to your network, or even on your own laptop (Mac or Linux). We want the dynamic results, so we use randomly selected servers on a regular interval to identify trends.
 
-The tests should be performed as close to the modem / router as possible. In any case I recommend you use a Ethernet (network) cable.
+The reason I started this project was because my FiOS bill increased after a promo period ended and I was considering switching to Spectrum. While FiOS is preferred for my work-from-home job, the improved download speeds from Spectrum was enticing for the price - but I also know that there have been occasional outages for Charter/Spectrum in our area, and knowing that the infrastructure relies on cable/coax and a shared node (i.e, everyone comes home after work and turns on Netflix and we all suffer).
 
-Ideal would be the execution directly on your router. If it has a storage for storing the measurement data and has enough power to run Python, you should run the code on the router. Otherwise I recommend to use a RaspberryPi or similar, which is connected by cable to the router.
+I signed up for Spectrum, but wanted to run a regular speedtest for each FiOS and Spectrum to compare the results. Initially, I was using the IFTTT method from [speedtest-cron][natterstefan] that wrote a JSON string to a Google spreadsheet, then utilized Data Studio to showcase the results. That ran into it's limits as Google Sheets will create a new sheet after 1k or 2k rows, meaning I stopped getting new data into the dashboard.
 
+With this update, I'm able to contribute the results to a common datastore and can let anyone else contribute their own data as well! This will give us a great visualization of ISP speeds in different areas at different times in a super cool way.
 
 ## System Requirements
 
@@ -76,7 +79,7 @@ There are other projects available, like [speedtest-cli-extras by HenrikBengtsso
 [ifapplet]: https://ifttt.com/applets/49618185d-log-speedtest-results-to-spreadsheet
 [maker]: https://ifttt.com/maker
 
----
+
 ## Support
 
 Support obviously not guaranteed, but I'll try my best.
@@ -84,7 +87,6 @@ Support obviously not guaranteed, but I'll try my best.
 - Twitter at <a href="http://twitter.com/kyletaylored" target="_blank">`@kyletaylored`</a>
 
 
----
 
 ## License and Disclaimer
 
