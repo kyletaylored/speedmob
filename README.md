@@ -23,6 +23,9 @@ I signed up for Spectrum, but wanted to run a regular speedtest for each FiOS an
 
 With this update, I'm able to contribute the results to a common datastore and can let anyone else contribute their own data as well! This will give us a great visualization of ISP speeds in different areas at different times in a super cool way.
 
+![SpeedMob Data Studio](https://i.imgur.com/EYK8BSM.png)
+[SpeedMob Data Studio](https://datastudio.google.com/embed/reporting/1njU6fHSqJA8Gmqx_RbC6XHCIvCx0yie8/page/Zaqb)
+
 ## System Requirements
 
 A UNIX-like system with Python (at least 2.5) is required to run the scripts.
