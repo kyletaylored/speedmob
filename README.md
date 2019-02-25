@@ -32,10 +32,10 @@ A UNIX-like system with Python (at least 2.5) is required to run the scripts.
 
 ## Installation
 
-You can try our installation script (beta), or install dependencies manually.
+You can try our installation script, or install dependencies manually.
 
 ```bash
-curl -fsSL speed.angrybear.club/get | bash
+curl -fsSL https://raw.githubusercontent.com/kyletaylored/speedmob/master/installer.sh | bash
 ```
 
 #### Manual install
