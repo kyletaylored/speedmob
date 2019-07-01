@@ -1,0 +1,27 @@
+{
+  "name": "speedmob",
+  "version": "1.0.0",
+  "description": "A service to collect and analyze random internet speeds.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kyletaylored/speedmob.git"
+  },
+  "keywords": [
+    "speedtest",
+    "api"
+  ],
+  "author": "Kyle Taylor",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kyletaylored/speedmob/issues"
+  },
+  "homepage": "https://github.com/kyletaylored/speedmob#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

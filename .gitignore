@@ -9,3 +9,9 @@ results.csv
 
 ## IFTTT
 ifttt.csv
+
+
+# Node
+node/node_modules
+node_modules
+npm-debug.log
