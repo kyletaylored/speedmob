@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/kyletaylored/speedmob#readme",
   "dependencies": {
+    "@google-cloud/bigquery": "^4.1.3",
     "express": "^4.17.1"
   }
 }
