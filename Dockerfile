@@ -1,20 +1,21 @@
 # Use the official Node.js 10 image.
 # https://hub.docker.com/_/node
-FROM node:10
+FROM node:10.13-alpine
+ENV NODE_ENV production
+
+# Add metadata
+LABEL maintainer="kyletaylored@gmail.com"
 
 # Create and change to the app directory.
-WORKDIR /usr/src/app/web
-
-# Copy application dependency manifests to the container image.
-# A wildcard is used to ensure both package.json AND package-lock.json are copied.
+WORKDIR /usr/src/app
 # Copying this separately prevents re-running npm install on every code change.
-COPY node/package*.json ./
-
+COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
 # Install production dependencies.
-RUN npm install --only=production
+RUN npm install --production --silent && mv node_modules ../
 
 # Copy local code to the container image.
-COPY ./node .
-
+COPY . .
+# Expose port 3000 for Express server
+EXPOSE 3000
 # Run the web service on container startup.
-CMD [ "npm", "start" ]
+CMD npm start
