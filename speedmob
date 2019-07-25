@@ -1,111 +1,11 @@
 #!/usr/bin/env bash
 ###########################################################################
-# Originally written by: Henrik Bengtsson, 2014
-# https://github.com/HenrikBengtsson/speedtest-cli-extras
-# Modified to use IFTTT by: Alasdair Allan, 2015
-# https://gist.github.com/aallan/bafc70a347f3b9526d30
-# Modified to use .config file: Stefan Natter, 2017
-# Modified to connect to external web API: Kyle Taylor, 2018
+# Speedmob Web Service
+# Author: Kyle Taylor, 2018
 # License: GPL (>= 2.1) [http://www.gnu.org/licenses/gpl.html]
 ###########################################################################
 
-# Abort if anything fails
-set -e
+source $PWD/speedmob_results
 
-# Declare some functions we'll use.
-function round() {
-  printf "%0.2f\n" $1
-};
-
-function convert_mb() {
-  echo "scale=10;
-  $1 / 1000000;" \
-  | bc
-}
-
-function fn_exists() {
- if [[ $(type -t $1) != "" ]]; then
-  echo $1 "exists. Continuing...";
- else
-  echo $1 "does not exist. Please install $1, or see the README.md.";
-  exit 1;
- fi
-}
-
-# Get network interface
-function get_network_interface() {
-    case "$1" in
-    Darwin)
-        ActiveNetwork=$(route get default | grep interface | awk '{print $2}')
-        ActiveNetworkName=$(networksetup -listallhardwareports | grep -B 1 "$ActiveNetwork" | awk '/Hardware Port/{ print }'|cut -d " " -f3-)
-        echo ${ActiveNetworkName}
-        ;;
-    Linux)
-        echo $(ip addr | awk '/state UP/' | awk 'NR==1 {print $2}' | sed 's/.$//')
-        ;;
-    *) echo "System not supported."
-       exit 1
-       ;;
-    esac
-}
-
-#########################################
-# Start running script
-#########################################
-echo "Running speed test..."
-# Check dependencies.
-fn_exists jq # json manipulator
-fn_exists speedtest # speedtest-cli
-fn_exists bc # calculator
-
-# Query Speedtest
-results=$(speedtest --share --json --bytes)
-
-# Parse to prepare variables.
-ping=`round $(echo $results | jq --raw-output '.ping')`
-dl=`round $(convert_mb $(echo $results | jq --raw-output '.download'))`
-ul=`round $(convert_mb $(echo $results | jq --raw-output '.upload'))`
-share_url=`echo $results | jq --raw-output '.share'`
-server=`echo $results | jq --raw-output '.server.sponsor'`
-dist=`round $(echo $results | jq --raw-output '.server.d')`
-isp=`echo $results | jq --raw-output '.client.isp'`
-from_ip=`echo $results | jq --raw-output '.client.ip'`
-
-# Get Network interface
-OS=`echo $(uname)`
-netinfc=`echo $(get_network_interface ${OS})`
-
-# Get IP info
-ipinfo=$(curl -sS http://ipinfo.io/${from_ip}/json)
-loc=$(echo $ipinfo | jq --raw-output '.loc')
-city=$(echo $ipinfo | jq --raw-output '.city')
-state=$(echo $ipinfo | jq --raw-output '.region')
-country=$(echo $ipinfo | jq --raw-output '.country')
-postal=$(echo $ipinfo | jq --raw-output '.postal')
-
-# Break down geo points
-latlon=$(echo ${loc} | sed 's/,/ /g')
-lat=$(echo ${latlon} | awk {'print $1'})
-lon=$(echo ${latlon} | awk {'print $2'})
-
-# Store into JSON
-JSON_STRING=$( jq -n \
-                  --arg fm "$isp" \
-                  --arg hs "$server" \
-                  --arg sd "$dist" \
-                  --arg pi "$ping" \
-                  --arg dl "$dl" \
-                  --arg ul "$ul" \
-                  --arg su "$share_url" \
-                  --arg nt "$netinfc" \
-                  --arg lat "$lat" \
-                  --arg lon "$lon" \
-                  --arg po "$postal" \
-                  --arg ct "$city" \
-                  --arg st "$state" \
-                  --arg co "$country" \
-                  --arg os "$OS" \
-                  '{"isp": $fm,"host_server": $hs,"host_distance": $sd,"ping": $pi,"download": $dl,"upload": $ul,"share_url": $su,"network_interface": $nt,"operating_system": $os, "latitude": $lat,"longitude": $lon,"postal_code": $po,"city": $ct,"state": $st,"country": $co}' )
-
-curl -X POST -H "Content-Type: application/json" -d "${JSON_STRING}" http://speed.kyletaylored.com/api/results
-logger -s "Submitted speedtest results. ${JSON_STRING}"
+curl -X POST -H "Content-Type: application/json" -d "${SM_JSON_STRING}" http://speed.kyletaylored.com/api/results
+logger -s "Submitted speedtest results. ${SM_JSON_STRING}"

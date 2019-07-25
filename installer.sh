@@ -11,9 +11,10 @@ case $OS in
 		git clone -q https://github.com/kyletaylored/speedmob
 		cd speedmob
 		brew install speedtest-cli jq bc
+		brew upgrade speedtest-cli jq bc
 		sudo mv speedmob /usr/local/bin/speedmob
-		chmod +x install_crontab
-		./install_crontab
+		chmod +x utils/install_crontab
+		./utils/install_crontab
 	    ;;
 	Linux)
 		echo "Linux detected..."
@@ -22,9 +23,9 @@ case $OS in
 		git clone -q https://github.com/kyletaylored/speedmob
 		cd speedmob
 		sudo mv speedmob /usr/local/bin/speedmob
-		chmod +x install_crontab install_raspian
-		./install_raspian
-		./install_crontab
+		chmod +x utils/install_crontab utils/install_raspian
+		./utils/install_raspian
+		./utils/install_crontab
 	    ;;
 	*) echo "System not supported."
 	   exit 1

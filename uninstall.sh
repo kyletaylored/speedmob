@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Import variables
-source $PWD/variables.cfg
+source $PWD/utils/variables.cfg
 
 # Remove Speebmob script on all systems.
 if [[ $(which speedmob) != "" ]]; then

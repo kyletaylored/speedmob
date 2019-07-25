@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+###########################################################################
+# Originally written by: Henrik Bengtsson, 2014
+# https://github.com/HenrikBengtsson/speedtest-cli-extras
+# Modified to use IFTTT by: Alasdair Allan, 2015
+# https://gist.github.com/aallan/bafc70a347f3b9526d30
+# Modified to use .config file: Stefan Natter, 2017
+# Refactored to use as library or base function: Kyle Taylor, 2018
+# License: GPL (>= 2.1) [http://www.gnu.org/licenses/gpl.html]
+###########################################################################
+
+# Import config
+source $PWD/utils/speedtest.cfg
+secret_key=$ifttt_secret
+event_name=$ifttt_event
+
+# Run speedmob
+source $PWD/speedmob_results
+
+# Convert to IFTTT JSON string
+json="{\"value1\":\"${SM_CSV_STRING}\"}"
+
+echo ""
+echo $SM_CSV_STRING
+echo ""
+
+curl -X POST -H "Content-Type: application/json" -d "${SM_JSON_STRING}" https://maker.ifttt.com/trigger/${event_name}/with/key/${secret_key}
+logger -s "Submitted speedtest results. ${SM_JSON_STRING}"

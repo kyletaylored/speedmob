@@ -1,0 +1,185 @@
+#!/usr/bin/env bash
+###########################################################################
+# Originally written by: Henrik Bengtsson, 2014
+# https://github.com/HenrikBengtsson/speedtest-cli-extras
+# Modified to use IFTTT by: Alasdair Allan, 2015
+# https://gist.github.com/aallan/bafc70a347f3b9526d30
+# Modified to use .config file: Stefan Natter, 2017
+# Modified to use JSON and send to external web API: Kyle Taylor, 2018
+# License: GPL (>= 2.1) [http://www.gnu.org/licenses/gpl.html]
+###########################################################################
+
+# Abort if anything fails
+set -e
+
+#########################################
+# Load config
+######################################### 
+source $PWD/utils/variables.cfg
+
+#########################################
+# Local functions
+#########################################
+
+# Round results to 2 decimal points.
+function sm_round() {
+  printf "%0.2f\n" $1
+};
+
+function sm_convert_mb() {
+  echo "scale=10;
+  $1 / 1000000;" \
+  | bc
+}
+
+# Check if bash function exists.
+function sm_fn_exists() {
+ if [[ $(type -t $1) != "" ]]; then
+  echo -e "${green}$1${NC} exists. Continuing...";
+ else
+  echo-red "ERROR ${1} does not exist. Please install ${1}, or see the README.";
+  echo -e "Visit ${yellow}https://github.com/kyletaylored/speedmob${NC} for more information or to file an issue.";
+  exit 1;
+ fi
+}
+
+# Get network interface
+function get_network_interface() {
+    case "$1" in
+    Darwin)
+        echo $(get_mac_network)
+        ;;
+    Linux)
+        echo $(ip addr | awk '/state UP/' | awk 'NR==1 {print $2}' | sed 's/.$//')
+        ;;
+    *) echo "null"
+       # Technically, this shouldn't be working.
+       #exit 1
+       ;;
+    esac
+}
+
+function get_mac_network() {
+  services=$(networksetup -listnetworkserviceorder | grep 'Hardware Port')
+
+  while read line; do
+      sname=$(echo $line | awk -F  "(, )|(: )|[)]" '{print $2}')
+      sdev=$(echo $line | awk -F  "(, )|(: )|[)]" '{print $4}')
+      #echo "Current service: $sname, $sdev, $currentservice"
+      if [ -n "$sdev" ]; then
+          ifout="$(ifconfig $sdev 2>/dev/null)"
+          echo "$ifout" | grep 'status: active' > /dev/null 2>&1
+          rc="$?"
+          if [ "$rc" -eq 0 ]; then
+              currentservice="$sname"
+              currentdevice="$sdev"
+              currentmac=$(echo "$ifout" | awk '/ether/{print $2}')
+
+              # may have multiple active devices, so echo it here
+              # echo "$currentservice, $currentdevice, $currentmac"
+              echo "$currentservice"
+              break
+          fi
+      fi
+  done <<< "$(echo "$services")"
+
+  if [ -z "$currentservice" ]; then
+      # Could not find current service
+      echo "null"
+  fi
+}
+
+#########################################
+# Set up logging.
+#########################################
+echo -e "${green_bg}Debugging: ${NC} Configuring log file..."
+if test -f "$SM_LOG_PATH"; then
+  mkdir -p `dirname $SM_LOG_PATH`
+  echo "isp,host_server,host_distance,ping,download,upload,share_url,network_interface,operating_system,latitude,longitude,postal_code,city,state,country,timestamp,runtime" > $SM_LOG_PATH
+fi
+
+#########################################
+# Check dependencies
+#########################################
+echo -e "${blue}Checking for dependencies...${NC}"
+# Check dependencies.
+echo -e "${green_bg}Check 1:${NC}${yellow} Speedtest CLI...${NC}"
+sm_fn_exists speedtest # speedtest-cli
+echo -e "${green_bg}Check 2:${NC}${yellow} JQ...${NC}"
+sm_fn_exists jq # json manipulator
+echo -e "${green_bg}Check 3:${NC}${yellow} BC...${NC}"
+sm_fn_exists bc # calculator
+echo -e "${green_bg}Check Complete!${NC}"
+
+#########################################
+# Start running script
+#########################################
+# Query Speedtest
+echo -e "${blue}Running speedtest... ${NC}"
+
+# Start runtime
+start=$(date +%s)
+# Run speedtest, get JSON results with Share URL
+results=$(speedtest --share --json --bytes)
+# Capture runtime
+stop=$(date +%s)
+runtime=$((stop-start))
+
+# Parse to prepare variables.
+ping=`sm_round $(echo $results | jq --raw-output '.ping')`
+dl=`sm_round $(sm_convert_mb $(echo $results | jq --raw-output '.download'))`
+ul=`sm_round $(sm_convert_mb $(echo $results | jq --raw-output '.upload'))`
+share_url=`echo $results | jq --raw-output '.share'`
+server=`echo $results | jq --raw-output '.server.sponsor'`
+dist=`sm_round $(echo $results | jq --raw-output '.server.d')`
+isp=`echo $results | jq --raw-output '.client.isp'`
+from_ip=`echo $results | jq --raw-output '.client.ip'`
+timestamp=`echo $results | jq --raw-output '.timestamp'`
+
+# Get Network interface
+OS=`echo $(uname)`
+netinfc=`echo $(get_network_interface ${OS})`
+
+# Get IP info
+ipinfo=$(curl -sS http://ipinfo.io/${from_ip}/json)
+loc=$(echo $ipinfo | jq --raw-output '.loc')
+city=$(echo $ipinfo | jq --raw-output '.city')
+state=$(echo $ipinfo | jq --raw-output '.region')
+country=$(echo $ipinfo | jq --raw-output '.country')
+postal=$(echo $ipinfo | jq --raw-output '.postal')
+
+# Break down geo points
+latlon=$(echo ${loc} | sed 's/,/ /g')
+lat=$(echo ${latlon} | awk {'print $1'})
+lon=$(echo ${latlon} | awk {'print $2'})
+
+# Store into CSV string
+SM_CSV_STRING=$(echo "$isp,$server,$dist,$ping,$dl,$ul,$share_url,$netinfc,$OS,$lat,$lon,$postal,$city,$state,$country,$timestamp,$runtime")
+
+# Store into JSON
+SM_JSON_STRING=$( jq -n \
+                  --arg fm "$isp" \
+                  --arg hs "$server" \
+                  --arg sd "$dist" \
+                  --arg pi "$ping" \
+                  --arg dl "$dl" \
+                  --arg ul "$ul" \
+                  --arg su "$share_url" \
+                  --arg nt "$netinfc" \
+                  --arg lat "$lat" \
+                  --arg lon "$lon" \
+                  --arg po "$postal" \
+                  --arg ct "$city" \
+                  --arg st "$state" \
+                  --arg co "$country" \
+                  --arg os "$OS" \
+                  --arg ts "$timestamp" \
+                  --arg rt "$runtime" \
+                  '{"isp": $fm,"host_server": $hs,"host_distance": $sd,"ping": $pi,"download": $dl,"upload": $ul,"share_url": $su,"network_interface": $nt,"operating_system": $os, "latitude": $lat,"longitude": $lon,"postal_code": $po,"city": $ct,"state": $st,"country": $co,"timestamp": $ts,"runtime": $rt}' )
+
+# Debug log
+if (test $SM_LOG_DEBUG -eq 1) && test -f "$SM_LOG_PATH"; then
+  echo -e "Logging results to ${yellow}${SM_LOG_PATH}${NC}"
+  echo $SM_CSV_STRING >> $SM_LOG_PATH
+  echo $SM_JSON_STRING
+fi
