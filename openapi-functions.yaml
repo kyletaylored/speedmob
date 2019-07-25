@@ -1,22 +1,22 @@
-swagger: '2.0'
-  info:
-    title: Speedmob API
-    description: A web service to collect and analyze anonymous internet speed tests.
-    version: 1.0.0
-  host: endpointsportal.speedmob-api.cloud.goog
-  schemes:
-    - https
-  produces:
-    - application/json
-  paths:
-    /log:
-      get:
-        summary: Log results
-        operationId: logSpeedmobResults
-        x-google-backend:
-          address: https://us-central1-speedmob-api.cloudfunctions.net/logSpeedmobResults
-        responses:
-          '200':
-            description: Log successfully recorded.
-            schema:
-              type: string
+swagger: "2.0"
+info:
+  title: Speedmob API
+  description: A web service to collect and analyze anonymous internet speed tests.
+  version: 1.0.0
+host: endpointsportal.speedmob-api.cloud.goog
+schemes:
+  - https
+produces:
+  - application/json
+paths:
+  /log:
+    get:
+      summary: Log results
+      operationId: logSpeedmobResults
+      x-google-backend:
+        address: https://us-central1-speedmob-api.cloudfunctions.net/logSpeedmobResults
+      responses:
+        "200":
+          description: Log successfully recorded.
+          schema:
+            type: string
