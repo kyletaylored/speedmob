@@ -57,5 +57,6 @@ exports.logResults = (req, res) => {
   }
 
   // If not handling POST, redirect to Github.
+  res.send(JSON.stringify(req));
   res.redirect("https://github.com/kyletaylored/speedmob");
 };
