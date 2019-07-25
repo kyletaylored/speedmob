@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Detect if speedmob exists.
+if [[ $(type -t /usr/local/bin/speedmob) = "file" ]]; then
+	echo "Speedmob detected, removing and reinstalling..."
+	rm -rf /usr/local/opt/speedmob
+	rm -rf /usr/local/bin/speedmob
+fi
+
 OS=`echo $(uname)`
 # Install speedmob
 case $OS in
