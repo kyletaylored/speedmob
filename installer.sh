@@ -7,6 +7,13 @@ if [[ $(type -t /usr/local/bin/speedmob) = "file" ]]; then
 	rm -rf /usr/local/bin/speedmob
 fi
 
+function sm_brew_install() {
+	brew upgrade $1
+	if [[ $? != 0 ]]; then
+		brew install $1
+	fi
+}
+
 OS=`echo $(uname)`
 # Install speedmob
 case $OS in
@@ -17,8 +24,9 @@ case $OS in
 	   		exit 1
 		fi
 		git clone -q https://github.com/kyletaylored/speedmob
-		brew install speedtest-cli jq bc
-		brew upgrade speedtest-cli jq bc
+		sm_brew_install speedtest-cli
+		sm_brew_install jq
+		sm_brew_install bc
 		sudo mv speedmob /usr/local/opt/speedmob
 		sudo ln -s /usr/local/opt/speedmob/speedmob /usr/local/bin/speedmob
 		cd speedmob
