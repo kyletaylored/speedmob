@@ -3,7 +3,7 @@ info:
   title: Speedmob API
   description: A web service to collect and analyze anonymous internet speed tests.
   version: 1.0.0
-host: endpointsportal.speedmob-api.cloud.goog
+host: speed.kyletaylored.com
 schemes:
   - https
 produces:
