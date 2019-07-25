@@ -10,7 +10,7 @@ produces:
   - application/json
 paths:
   /log:
-    get:
+    post:
       summary: Log results
       operationId: logSpeedmobResults
       x-google-backend:

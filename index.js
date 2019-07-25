@@ -38,6 +38,7 @@ exports.logResults = (req, res) => {
   // Check for env
   if (!bqDataset || !bqTable) {
     console.log("No BigQuery vars defined.");
+    res.sendStatus(404);
     return 0;
   }
 
@@ -54,7 +55,7 @@ exports.logResults = (req, res) => {
   if (req.get("content-type") === "application/json" && req.method === "POST") {
     insertRows(bqDataset, bqTable, req.body);
     console.log("Log speedtest", JSON.stringify(req.body));
-    res.send("Success!");
+    res.sendStatus(200); // equivalent to res.status(200).send('OK')
   } else {
     // If not handling POST, redirect to Github.
     res.redirect("https://github.com/kyletaylored/speedmob");
