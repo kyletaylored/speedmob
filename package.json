@@ -1,7 +1,7 @@
 {
   "name": "speedmob",
   "version": "1.0.0",
-  "description": "A service to collect and analyze random internet speeds.",
+  "description": "A web service to collect and analyze anonymous internet speed tests.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -25,8 +25,7 @@
   },
   "homepage": "https://github.com/kyletaylored/speedmob#readme",
   "dependencies": {
-    "@google-cloud/bigquery": "^4.1.4",
-    "escape-html": "^1.0.3"
+    "@google-cloud/bigquery": "^4.1.4"
   },
   "cloud-repo-tools": {
     "requiresKeyFile": true,
