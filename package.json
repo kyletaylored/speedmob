@@ -20,14 +20,16 @@
   "bugs": {
     "url": "https://github.com/kyletaylored/speedmob/issues"
   },
+  "engines": {
+    "node": ">=8.0.0"
+  },
   "homepage": "https://github.com/kyletaylored/speedmob#readme",
   "dependencies": {
     "@google-cloud/bigquery": "^4.1.4",
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "dotenv": "^8.0.0",
-    "express": "^4.17.1",
-    "helmet": "^3.18.0",
-    "morgan": "^1.9.1"
+    "escape-html": "^1.0.3"
+  },
+  "cloud-repo-tools": {
+    "requiresKeyFile": true,
+    "requiresProjectId": true
   }
 }
