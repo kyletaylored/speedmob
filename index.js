@@ -54,9 +54,9 @@ exports.logResults = (req, res) => {
   if (req.get("content-type") === "application/json" && req.method === "POST") {
     insertRows(bqDataset, bqTable, req.body);
     console.log("Log speedtest", JSON.stringify(req.body));
+    res.send("Success!");
+  } else {
+    // If not handling POST, redirect to Github.
+    res.redirect("https://github.com/kyletaylored/speedmob");
   }
-
-  // If not handling POST, redirect to Github.
-  res.send(JSON.stringify(req));
-  res.redirect("https://github.com/kyletaylored/speedmob");
 };
