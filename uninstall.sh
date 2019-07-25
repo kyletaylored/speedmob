@@ -7,6 +7,7 @@ source $PWD/utils/variables.cfg
 if [[ $(which speedmob) != "" ]]; then
 	echo "Removing speedmob..."
 	rm $(which speedmob)
+	rm -r /usr/local/opt/speedmob
 fi
 
 # Remove cron or launchd

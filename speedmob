@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 ###########################################################################
 # Speedmob Web Service
 # Author: Kyle Taylor, 2018
@@ -7,5 +7,5 @@
 
 source $PWD/speedmob_results
 
-curl -X POST -H "Content-Type: application/json" -d "${SM_JSON_STRING}" http://speed.kyletaylored.com/api/results
+curl -k -X POST -H "Content-Type: application/json" -d "${SM_JSON_STRING}" https://speed.kyletaylored.com/log
 logger -s "Submitted speedtest results. ${SM_JSON_STRING}"

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 ###########################################################################
 # Originally written by: Henrik Bengtsson, 2014
 # https://github.com/HenrikBengtsson/speedtest-cli-extras
@@ -20,9 +20,5 @@ source $PWD/speedmob_results
 # Convert to IFTTT JSON string
 json="{\"value1\":\"${SM_CSV_STRING}\"}"
 
-echo ""
-echo $SM_CSV_STRING
-echo ""
-
 curl -X POST -H "Content-Type: application/json" -d "${SM_JSON_STRING}" https://maker.ifttt.com/trigger/${event_name}/with/key/${secret_key}
-logger -s "Submitted speedtest results. ${SM_JSON_STRING}"
+logger -s "Submitted speedtest results. ${json}"

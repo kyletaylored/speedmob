@@ -1,4 +1,5 @@
 #!/bin/bash
+
 OS=`echo $(uname)`
 # Install speedmob
 case $OS in
@@ -9,10 +10,11 @@ case $OS in
 	   		exit 1
 		fi
 		git clone -q https://github.com/kyletaylored/speedmob
-		cd speedmob
 		brew install speedtest-cli jq bc
 		brew upgrade speedtest-cli jq bc
-		sudo mv speedmob /usr/local/bin/speedmob
+		sudo mv speedmob /usr/local/opt/speedmob
+		sudo ln -s /usr/local/opt/speedmob/speedmob /usr/local/bin/speedmob
+		cd speedmob
 		chmod +x utils/install_crontab
 		./utils/install_crontab
 	    ;;
@@ -21,8 +23,9 @@ case $OS in
 		sudo apt-get update
 		sudo apt-get install jq bc git -y
 		git clone -q https://github.com/kyletaylored/speedmob
+		sudo mv speedmob /usr/local/opt/speedmob
+		sudo ln -s /usr/local/opt/speedmob/speedmob /usr/local/bin/speedmob
 		cd speedmob
-		sudo mv speedmob /usr/local/bin/speedmob
 		chmod +x utils/install_crontab utils/install_raspian
 		./utils/install_raspian
 		./utils/install_crontab
