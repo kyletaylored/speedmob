@@ -21,14 +21,6 @@ async function insertRows(datasetId, tableId, results) {
 }
 
 /**
- * For adding a 0 pad to date values.
- * @param {Integer} n Number to add prefix 0 to.
- */
-function pad(n) {
-  return n < 10 ? "0" + n : n;
-}
-
-/**
  * HTTP function that supports CORS requests.
  *
  * @param {Object} req Cloud Function request context.
@@ -55,9 +47,9 @@ exports.logResults = (req, res) => {
   if (req.get("content-type") === "application/json" && req.method === "POST") {
     insertRows(bqDataset, bqTable, req.body);
     console.log("Log speedtest", JSON.stringify(req.body));
-    res.sendStatus(200); // equivalent to res.status(200).send('OK')
+    res.status(200).send("Log successfully sent");
   } else {
     // If not handling POST, redirect to Github.
-    res.redirect("https://github.com/kyletaylored/speedmob");
+    res.redirect("https://github.com/kyletaylored/speedmob").send();
   }
 };
