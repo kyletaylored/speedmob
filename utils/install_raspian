@@ -1,7 +1,10 @@
 #!/bin/bash
 cd /tmp
+# Download latest speedtest
 wget https://github.com/sivel/speedtest-cli/archive/master.zip
 unzip -qq master.zip
-cd speedtest-cli-master
-chmod 755 speedtest.py
-sudo mv speedtest.py /usr/local/bin/speedtest
+# Move to usr/local
+mv speedtest-cli-master /usr/local/opt/speedtest-cli
+chmod 755 /usr/local/opt/speedtest-cli/speedtest.py
+# Create symlink
+ln -s /usr/local/opt/speedtest-cli/speedtest.py /usr/local/bin/speedtest

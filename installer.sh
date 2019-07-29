@@ -1,49 +1,86 @@
 #!/bin/bash
 
+# Get OS
+OS=`echo $(uname)`
+
+# Install paths
+SM_OPT="/usr/local/opt/speedmob"
+SM_BIN="/usr/local/bin/speedmob"
+
 # Detect if speedmob exists.
-if [[ $(type -t /usr/local/bin/speedmob) = "file" ]]; then
+if [ -e "$SM_BIN" ] || [ -e "$SM_OPT" ] || [[ $(which speedmob) != "" ]]; then
 	echo "Speedmob detected, removing and reinstalling..."
-	rm -rf /usr/local/opt/speedmob
-	rm -rf /usr/local/bin/speedmob
+	if [ ! -e "$SM_BIN" ]; then
+		unlink $SM_BIN
+		rm $SM_BIN
+	fi
+	if [ ! -e "$SM_OPT" ]; then
+		rm -r $SM_OPT
+	fi
 fi
 
+# Check if function exists.
+function sm_fn_exists() {
+ if [[ $(type -t $1) != "" ]]; then
+ 	echo 1
+ else
+ 	echo 0
+ fi
+}
+
 function sm_brew_install() {
-	brew upgrade $1
-	if [[ $? != 0 ]]; then
+	upgrade=$(sm_fn_exists $1)
+	if [[ $upgrade == 0 ]]; then
 		brew install $1
+	else
+		brew upgrade $1
 	fi
 }
 
-OS=`echo $(uname)`
+function sm_install_nix() {
+	echo "Installing speedmob..."
+	# Create opt path if doesn't exist already.
+	mkdir -p /usr/local/opt
+	git clone -q https://github.com/kyletaylored/speedmob /usr/local/opt/speedmob
+	ln -s /usr/local/opt/speedmob/speedmob /usr/local/bin/speedmob
+
+	# Install speedmob and crontab
+	cd /usr/local/opt/speedmob
+	chmod +x utils/install_crontab utils/install_raspian
+	bash utils/install_crontab
+
+	if [[ $OS == "Linux" ]]; then
+		bash utils/install_raspian
+	fi
+}
+
 # Install speedmob
 case $OS in
 	Darwin)
 		echo "Mac OS detected..."
+
+		# Check for Homebrew
 		if [[ $(type -t brew) = "" ]]; then
 			echo "Homebrew not available, and is required for installation. Please install Homebrew by visiting https://brew.sh"
 	   		exit 1
 		fi
-		git clone -q https://github.com/kyletaylored/speedmob
+
+		# Homebrew
 		sm_brew_install speedtest-cli
 		sm_brew_install jq
 		sm_brew_install bc
-		sudo mv speedmob /usr/local/opt/speedmob
-		sudo ln -s /usr/local/opt/speedmob/speedmob /usr/local/bin/speedmob
-		cd speedmob
-		chmod +x utils/install_crontab
-		./utils/install_crontab
+
+		# Install speedmob
+		sm_install_nix
+		
 	    ;;
 	Linux)
 		echo "Linux detected..."
 		sudo apt-get update
 		sudo apt-get install jq bc git -y
-		git clone -q https://github.com/kyletaylored/speedmob
-		sudo mv speedmob /usr/local/opt/speedmob
-		sudo ln -s /usr/local/opt/speedmob/speedmob /usr/local/bin/speedmob
-		cd speedmob
-		chmod +x utils/install_crontab utils/install_raspian
-		./utils/install_raspian
-		./utils/install_crontab
+		
+		# Install speedmob
+		sm_install_nix
 	    ;;
 	*) echo "System not supported."
 	   exit 1
