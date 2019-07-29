@@ -1,14 +1,15 @@
 #!/bin/bash
 
 # Import variables
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 OS=`echo $(uname)`
 
 # Run test every 30 minutes.
 case $OS in
 	Darwin)
 		echo "Installing LaunchDaemon..."
-		chmod +x install_osx
-		./install_osx
+		chmod +x $DIR/install_osx
+		bash $DIR/install_osx
 	    ;;
 	Linux)
 		echo "Installing crontab task..."
