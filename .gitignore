@@ -1,15 +1,12 @@
 ## IDE
 .idea
+.code
 
 ## Config
 speedtest.cfg
 
-## Results
-results.csv
-
-## IFTTT
-ifttt.csv
-
+## Debug
+*.csv
 
 # Node
 node/node_modules
