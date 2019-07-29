@@ -7,11 +7,9 @@
 [![Twitter](https://img.shields.io/twitter/url/https/github.com/kyletaylored/speedmob.svg?style=social)](https://twitter.com/intent/tweet?text=https://github.com/kyletaylored/speedmob)
 [![Twitter Follow](https://img.shields.io/twitter/follow/kyletaylored.svg?style=social&label=Follow)](https://twitter.com/kyletaylored)
 
-
 [Inspired (Forked) by natterstefan's speedtest_cron on Github][natterstefan], Speed Mob uses the same principles of running a speedtest on a regular schedule (every 30 minutes by default) that then submits the results to our Speed Mob server (a Lumen app that writes to a MySQL database) where it will be used to aggregate and showcase all speedtest results submitted.
 
 For anyone interested in making their own Speed Mob server, feel free to use this as a source! The installation supports both Mac OS(X) and Linux (Raspian) to use as clients that submit data to the server, and utilized as common tooling as possible for consitency (bash, python, jq, etc).
-
 
 ## Idea
 
@@ -39,7 +37,8 @@ curl -fsSL https://raw.githubusercontent.com/kyletaylored/speedmob/master/instal
 ```
 
 #### Manual install
-``` bash
+
+```bash
 git clone https://github.com/kyletaylored/speedmob
 cd speedmob
 chmod +x installer.sh
@@ -47,34 +46,44 @@ chmod +x installer.sh
 ```
 
 #### Uninstall
-``` bash
+
+To use the automated uninstaller, follow the steps below.
+
+```bash
 chmod +x uninstall.sh
 ./uninstall.sh
+```
+
+To manually uninstall, just remove speedmob from `/usr/local`.
+
+```
+rm -r /usr/local/opt/speedmob
+rm -r /usr/local/bin/speedmob
+unlink /usr/localbin/speedmob
 ```
 
 ### speedtest_ifttt
 
 After reading the "[Use Raspberry Pi to Measure Broadband Speeds to Hold Your ISP Accountable][iftttmaker]" article I decided to implemented [Aallan's work][gistaallan] here too. Because I would like to get either a push notification when the internet speed drops or add the result to a Google Spreadsheet automatically. This is how you use it:
 
-- rename ```example.cfg``` to ```speedtest.cfg```
+- rename `example.cfg` to `speedtest.cfg`
 - setup the [maker channel on IFTTT][maker]
 - add an Applet [like this one][ifapplet]
 - add the secret key and event name to the `speedtest.cfg`
-- run the script ```./speedtest_ifttt```
+- run the script `speedmob --ifttt`
 
 ## Development
 
 Improvements, suggestions or bug fixes are very welcome. Just create a pull request.
 
-
 ## Similar projects
 
-There are other projects available, like [speedtest-cli-extras by HenrikBengtsson][spclix], [speedtest-cron by vwillcox][vwillcox] or [speedtest-cron by brainTrain][brainTrain]. The last one makes use of [Google Spreadsheets and IFTTT's Maker][iftttmaker].
+There are other projects available, like [speedtest-cli-extras by HenrikBengtsson][spclix], [speedtest-cron by vwillcox][vwillcox] or [speedtest-cron by brainTrain][braintrain]. The last one makes use of [Google Spreadsheets and IFTTT's Maker][iftttmaker].
 
 [spcli]: https://github.com/sivel/speedtest-cli
 [spclix]: https://github.com/HenrikBengtsson/speedtest-cli-extras
 [vwillcox]: https://github.com/vwillcox/speedtest-cron
-[brainTrain]: https://github.com/brainTrain/speedtest-cron
+[braintrain]: https://github.com/brainTrain/speedtest-cron
 [speedtest]: http://www.speedtest.net/
 [jsspcr]: https://gitgud.io/J0s3f/speedtest_cron
 [iftttmaker]: http://makezine.com/projects/send-ticket-isp-when-your-internet-drops/
@@ -83,14 +92,11 @@ There are other projects available, like [speedtest-cli-extras by HenrikBengtsso
 [maker]: https://ifttt.com/maker
 [natterstefan]: https://github.com/natterstefan/speedtest-cron
 
-
 ## Support
 
 Support obviously not guaranteed, but I'll try my best.
 
 - Twitter at <a href="http://twitter.com/kyletaylored" target="_blank">`@kyletaylored`</a>
-
-
 
 ## License and Disclaimer
 
