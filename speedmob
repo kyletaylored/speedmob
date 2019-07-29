@@ -207,7 +207,7 @@ for var in "$@"
 do
   # Send to Speedmob Web API
   if [[ "$var" == "--web" ]]; then
-    curl -X POST -H "Content-Type: application/json" -d "${SM_JSON_STRING}" https://speed.kyletaylored.com/log
+    curl -X POST -H "Content-Type: application/json" -d "${SM_JSON_STRING}" https://us-central1-speedmob-api.cloudfunctions.net/log 
     logger -s "Submitted speedtest results."
     echo ${SM_JSON_STRING}
   fi
