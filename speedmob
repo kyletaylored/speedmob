@@ -48,6 +48,11 @@ function sm_fn_exists() {
  fi
 }
 
+# Create folder and file
+function sm_mkfile() { 
+  mkdir -p "$(dirname "$1")" && touch "$1" ;
+}
+
 # Get network interface
 function get_network_interface() {
     case "$1" in
@@ -108,7 +113,7 @@ DIR=$(sm_get_dir)
 #########################################
 if [[ ! -f $SM_LOG_FILE ]]; then
   echo -ne "${blue}Debugging:${NC} Configuring log file..."
-  touch $SM_LOG_FILE
+  sm_mkfile $SM_LOG_FILE
   echo "isp,host_server,host_distance,ping,download,upload,share_url,network_interface,operating_system,latitude,longitude,postal_code,city,state,country,timestamp,runtime" > $SM_LOG_FILE
   echo -e "${green}SUCCESS${NC}"
 fi
