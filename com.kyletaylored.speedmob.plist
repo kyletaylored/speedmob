@@ -1,28 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-  <dict>
-
-    <key>Label</key>
-    <string>com.kyletaylored.speedmob</string>
-
-    <key>RunAtLoad</key>
-    <true/>
-
-    <key>StartInterval</key>
-    <integer>1800</integer>
-
-    <key>EnvironmentVariables</key>
     <dict>
-      <key>PATH</key>
-      <string><![CDATA[/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin]]></string>
+        <key>EnvironmentVariables</key>
+        <dict>
+            <key>PATH</key>
+            <string>/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        </dict>
+        <key>Label</key>
+        <string>com.kyletaylored.speedmob</string>
+        <key>ProgramArguments</key>
+        <array>
+            <string>/usr/local/bin/speedmob</string>
+            <string>--web</string>
+        </array>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>StandardErrorPath</key>
+        <string>/tmp/com.kyletaylored.speedmob.err</string>
+        <key>StandardOutPath</key>
+        <string>/tmp/com.kyletaylored.speedmob.out</string>
+        <key>StartInterval</key>
+        <integer>1800</integer>
     </dict>
-
-    <key>ProgramArguments</key>
-    <array>
-      <string>speedmob</string>
-      <string>--web</string>
-    </array>
-
-  </dict>
 </plist>
