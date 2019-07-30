@@ -20,7 +20,7 @@
 
     <key>ProgramArguments</key>
     <array>
-      <string>/usr/local/bin/speedmob</string>
+      <string>speedmob</string>
       <string>--web</string>
     </array>
 
