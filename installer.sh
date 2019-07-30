@@ -6,6 +6,10 @@ OS=`echo $(uname)`
 # Install paths
 SM_OPT="/usr/local/opt/speedmob"
 SM_BIN="/usr/local/bin/speedmob"
+# Launchd
+ID="speedmob"
+IDENTIFIER="com.kyletaylored.speedmob"
+LAUNCH_AGENT_PLIST="$HOME/Library/LaunchAgents/$IDENTIFIER.plist"
 
 # Detect if speedmob exists.
 if [ -e "$SM_BIN" ] || [ -e "$SM_OPT" ] || [[ $(which speedmob) != "" ]]; then
@@ -16,6 +20,13 @@ if [ -e "$SM_BIN" ] || [ -e "$SM_OPT" ] || [[ $(which speedmob) != "" ]]; then
 	if [ -e "$SM_OPT" ]; then
 		rm -rf $SM_OPT
 	fi
+fi
+
+# Remove Launchd on Mac
+if [[ $OS == "Darwin" ]]; then
+	STATUS=`/bin/launchctl list | /usr/bin/grep $ID | /usr/bin/awk '{print $3}'`
+	/bin/launchctl unload $LAUNCH_AGENT_PLIST
+	rm -f $LAUNCH_AGENT_PLIST
 fi
 
 # Check if function exists.
