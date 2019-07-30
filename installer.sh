@@ -10,12 +10,11 @@ SM_BIN="/usr/local/bin/speedmob"
 # Detect if speedmob exists.
 if [ -e "$SM_BIN" ] || [ -e "$SM_OPT" ] || [[ $(which speedmob) != "" ]]; then
 	echo "Speedmob detected, removing and reinstalling..."
-	if [ ! -e "$SM_BIN" ]; then
+	if [ -e "$SM_BIN" ]; then
 		unlink $SM_BIN
-		rm $SM_BIN
 	fi
-	if [ ! -e "$SM_OPT" ]; then
-		rm -r $SM_OPT
+	if [ -e "$SM_OPT" ]; then
+		rm -rf $SM_OPT
 	fi
 fi
 
