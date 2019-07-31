@@ -103,8 +103,6 @@ function get_mac_network() {
 # Load config
 #########################################
 
-# This is dumb, I know.
-DIR=$(sm_get_dir)
 source /usr/local/opt/speedmob/utils/variables.cfg
 DIR=$(sm_get_dir)
 
